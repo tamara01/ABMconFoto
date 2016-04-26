@@ -49,11 +49,9 @@
 	</form>
 
 	<div class="container">
-		<div class="page-header">
-			<h1>Ejemplo de Grilla</h1>      
-		</div>
+	
 		<div class="CajaInicio animated bounceInRight">
-			<h1>Ejemplos ABM </h1>
+			<h1> ABM </h1>
 
 <?php 
 
@@ -65,17 +63,19 @@ echo "<table class='table'>
 				<th>  Apellido   </th>
 				<th>  Nombre     </th>
 				<th>  Dni        </th>
+				<th>  Foto   	 </th>
 				<th>  BORRAR     </th>
 				<th>  MODIFICAR  </th>
 			</tr> 
 		</thead>";   	
 
 	foreach ($ArrayDePersonas as $p){
-
+		
 		echo " 	<tr>
 					<td>".$p->GetApellido()."</td>
 					<td>".$p->GetNombre()."</td>
-					<td>".$p->GetDni()."</td>
+					<td>".$p->GetDni()."</td> 
+					<td><img src=Fotos/".$p->GetFoto()." height=50px width=50px </td>
 					<td><button class='btn btn-danger' name='Borrar' onclick='Borrar(".$p->GetDni().")'>Borrar</button></td>
 					<td><button class='btn btn-warning' name='Modificar' onclick='Modificar(".$p->GetDni().")'>Modificar</button></td>
 				</tr>";

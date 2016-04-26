@@ -75,19 +75,17 @@
 	} 
 ?>
 	<div class="container">
-		<div class="page-header">
-			<h1>Ejemplos de PHP</h1>      
-		</div>
+		
 		<div class="CajaInicio animated bounceInRight">
-			<h1>Ejemplo de <?php echo $titulo; ?></h1>
+			<h1> <?php echo $titulo; ?></h1>
 
-			<form id="FormIngreso" method="post" action="alta.php">
+			<form id="FormIngreso" method="post" action="alta.php" enctype="multipart/form-data">
 				<input type="text" name="apellido" id="apellido" placeholder="ingrese apellido" value="<?php echo isset($unaPersona) ?  $unaPersona->GetApellido() : "" ; ?>" /><span id="lblApellido" style="display:none;color:#FF0000;width:1%;float:right;font-size:80">*</span>
 				<input type="text" name="nombre" id="nombre" placeholder="ingrese nombre" value="<?php echo isset($unaPersona) ?  $unaPersona->GetNombre() : "" ; ?>" /> <span id="lblNombre" style="display:none;color:#FF0000;width:1%;float:right;font-size:80">*</span>
 				<input type="text" name="dni" id="dni" placeholder="ingrese dni" value="<?php echo isset($unaPersona) ?  $unaPersona->GetDni() : "" ; ?>" /> <span id="lblDni" style="display:none;color:#FF0000;width:1%;float:right;font-size:80">*</span>
-
+				<input type="file" class="MiBotonUTN" name="archivo" >
 				<input type="hidden" name="dniModif" value="<?php echo isset($unaPersona) ? $unaPersona->GetDni() : "" ; ?>" />
-
+				<br>
 				<input type="button" class="btn btn-danger" name="guardar" value="Guardar" onclick="Validar()" />
 				<input type="hidden" value="" id="hdnAgregar" name="agregar" />
 				</div>
@@ -102,18 +100,29 @@ if(isset($_POST['agregar']) && $_POST['agregar'] === "Guardar")// si esto no se 
 	if($_POST['dniModif'] != "")//paso por grilla y luego guardo
 	{
 		$unaPersona = Persona::TraerUnaPersona($_POST['dni']);
+
+		$nombreFoto = $_POST['dni'].".".pathinfo($_FILES['archivo']['name'], PATHINFO_EXTENSION);
+		move_uploaded_file($_FILES['archivo']['tmp_name'], "Fotos/$nombreFoto");
+		
+
 		$unaPersona->SetApellido($_POST['apellido']);
 		$unaPersona->SetNombre($_POST['nombre']);
 		$unaPersona->SetDni($_POST['dni']);
+		$unaPersona->SetFoto($nombreFoto);
 		
 		$retorno = Persona::Modificar($unaPersona);
 	}
 	else// si es un alta
 	{
-		$p = new Persona();	
+		$p = new Persona();
+
+		$nombreFoto = $_POST['dni'].".".pathinfo($_FILES['archivo']['name'], PATHINFO_EXTENSION);
+		move_uploaded_file($_FILES['archivo']['tmp_name'], "Fotos/$nombreFoto");
+			
 		$p->SetApellido($_POST['apellido']);
 		$p->SetNombre($_POST['nombre']);
 		$p->SetDni($_POST['dni']);
+		$p->SetFoto($nombreFoto);
 
 		$p->Insertar();
 	}	

@@ -6,6 +6,7 @@ class Persona
 	private $nombre;
  	private $apellido;
   	private $dni;
+  	private $foto;
 //--------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------//
@@ -35,6 +36,17 @@ class Persona
 	{
 		$this->dni = $valor;
 	}
+
+	public function GetFoto()
+	{
+		return $this->foto;
+	}
+
+	public function SetFoto($valor)
+	{
+		$this->foto = $valor;
+	}
+
 //--------------------------------------------------------------------------------//
 //--CONSTRUCTOR
 	public function __construct($dni=NULL)
@@ -45,6 +57,7 @@ class Persona
 			$this->apellido = $obj->apellido;
 			$this->nombre = $obj->nombre;
 			$this->dni = $dni;
+			$this->foto = $obj->foto;
 		}
 	}
 
@@ -52,13 +65,13 @@ class Persona
 //--TOSTRING	
   	public function ToString()
 	{
-	  	return $this->apellido."-".$this->nombre."-".$this->dni;
+	  	return $this->apellido."-".$this->nombre."-".$this->dni."-".$this->foto;
 	}
 //--------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------//
 //--METODO DE CLASE
-	public static function TraerUnaPersona($dni) 
+	public static function TraerUnaPersona($dni) //leer retorna 1 persona
 	{
 		$persona = new Persona();
 		
@@ -69,6 +82,7 @@ class Persona
 
 			if(count($arr) > 1){
 				if((int)$arr[2] == $dni){
+					$persona->SetFoto($arr[3]);
 					$persona->SetDni($arr[2]);
 					$persona->SetNombre($arr[1]);
 					$persona->SetApellido($arr[0]);
@@ -81,7 +95,7 @@ class Persona
 		return $persona;				
 	}
 	
-	public static function TraerTodasLasPersonas()
+	public static function TraerTodasLasPersonas() //leer retorna string
 	{
 		$arrPersonas = array();
 		
@@ -91,6 +105,7 @@ class Persona
 			$arr = explode("-", fgets($a));
 			if(count($arr) > 1){
 				$persona = new Persona();
+				$persona->SetFoto($arr[3]);
 				$persona->SetDni($arr[2]);
 				$persona->SetNombre($arr[1]);
 				$persona->SetApellido($arr[0]);
@@ -118,6 +133,7 @@ class Persona
 					continue;
 				}
 				$persona = new Persona();
+				$persona->SetFoto($arr[3]);
 				$persona->SetDni($arr[2]);
 				$persona->SetNombre($arr[1]);
 				$persona->SetApellido($arr[0]);
@@ -152,6 +168,7 @@ class Persona
 				}
 				else{
 					$persona = new Persona();
+					$persona->SetFoto($arr[3]);
 					$persona->SetDni($arr[2]);
 					$persona->SetNombre($arr[1]);
 					$persona->SetApellido($arr[0]);
